@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import Player from './components/Player';
+import axiosWithAuth from './components/axiosWithAuth';
 
 class App extends React.Component {
 
@@ -17,7 +18,7 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log('CDM is running')
-      axios.get('http://localhost:5000/api/players')
+      axiosWithAuth().get('players')
      .then(response => {
       console.log('data: ', response.data)
       this.setState({
