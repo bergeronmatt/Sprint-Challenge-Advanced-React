@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import axios from 'axios';
+import Player from './components/Player';
+import axiosWithAuth from './components/axiosWithAuth';
 
-function App() {
+
+
+class App extends React.Component {
+
+  constructor() {
+    super();
+    this.state= {
+      players:[],
+      country: '',
+      searches: ''
+    }
+    console.log('constructor is running')
+  }
+
+  componentDidMount() {
+    console.log('CDM is running')
+      axiosWithAuth().get('players')
+     .then(response => {
+      console.log('data: ', response.data)
+      this.setState({
+        players: response.data
+      })
+    })
+     .catch(error => {
+      console.log('error: ', error)
+    })
+  }
+
+  componentDidUpdate(prevState) {
+    if(prevState.players !== this.state.players){
+      console.log('CDU is running')
+    }
+  }
+
+  render() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header>Team USA Search Results</header>
+      <Player player={this.state.players}/>
     </div>
   );
+}
 }
 
 export default App;
